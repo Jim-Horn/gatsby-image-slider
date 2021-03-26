@@ -3,13 +3,6 @@ module.exports = {
     title: "Contentful image slider",
   },
   plugins: [
-    {
-      resolve: "gatsby-source-contentful",
-      options: {
-        accessToken: "2WbP-6ohkFrXR94tHKbCjBkp-RlHjvqKOST_ew-Amwc",
-        spaceId: "16nm6vz43ids",
-      },
-    },
     "gatsby-plugin-styled-components",
     "gatsby-plugin-gatsby-cloud",
     "gatsby-plugin-image",
