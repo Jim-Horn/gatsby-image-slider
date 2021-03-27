@@ -14,7 +14,6 @@ const GetMyImage = edge => (
 
 const GlobalStyles = createGlobalStyle`
   body {
-    margin: 0;
    height: 100vh;
     font-family: Open-Sans, Helvetica, sans-serif;
     display: flex;
