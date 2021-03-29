@@ -5,7 +5,7 @@ import { graphql } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import styled, { createGlobalStyle } from 'styled-components';
 
-const GetMyImage = edge => (
+const GetMyImage = (edge) => (
     <div>
         <GatsbyImage image={getImage(edge.node.gatsbyImageData)} alt="" />
         <p className="legend">{edge.node.original.src}</p>
@@ -14,7 +14,7 @@ const GetMyImage = edge => (
 
 const GlobalStyles = createGlobalStyle`
   body {
-   height: 100vh;
+   min-height: 100vh;
     font-family: Open-Sans, Helvetica, sans-serif;
     display: flex;
     align-items: center;
@@ -27,6 +27,10 @@ const SlideshowWrapper = styled.div`
     width: 960px;
 `;
 
+const Code = styled.pre`
+    color: darkgreen;
+`;
+
 const IndexPage = ({ data }) => (
     <>
         <GlobalStyles />
@@ -36,6 +40,12 @@ const IndexPage = ({ data }) => (
                 <li>
                     View online:
                     <a href="https://gatsbyimageslider.gatsbyjs.io">https://gatsbyimageslider.gatsbyjs.io/</a>
+                </li>
+                <li>
+                    Git repo:
+                    <a href="https://github.com/Jim-Horn/gatsby-image-slider">
+                        https://github.com/Jim-Horn/gatsby-image-slider
+                    </a>
                 </li>
             </ul>
         </p>
@@ -57,9 +67,40 @@ const IndexPage = ({ data }) => (
                 dynamicHeight={true}
                 emulateTouch={true}
                 autoFocus={true}>
-                {data.allImageSharp.edges.filter(edge => edge.node.original.src.endsWith('.jpeg')).map(GetMyImage)}
+                {data.allImageSharp.edges.filter((edge) => edge.node.original.src.endsWith('.jpeg')).map(GetMyImage)}
             </Carousel>
         </SlideshowWrapper>
+
+        <h2>Source:</h2>
+
+        <Code>{`
+<Carousel
+    interval={5000}
+    showArrows={true}
+    onChange={() => {}}
+    onClickItem={() => {}}
+    onClickThumb={() => {}}
+    infiniteLoop={true}
+    showStatus={false}
+    stopOnHover={true}
+    swipeable={true}
+    showThumbs={false}
+    useKeyboardArrows={true}
+    autoPlay={true}
+    dynamicHeight={true}
+    emulateTouch={true}
+    autoFocus={true}>
+    {data.allImageSharp.edges.filter(edge => edge.node.original.src.endsWith('.jpeg')).map(GetMyImage)}
+</Carousel>`}</Code>
+
+        <Code>{`
+const GetMyImage = edge => (
+    <div>
+        <GatsbyImage image={getImage(edge.node.gatsbyImageData)} alt="" />
+        <p className="legend">{edge.node.original.src}</p>
+    </div>
+);`}</Code>
+
     </>
 );
 
