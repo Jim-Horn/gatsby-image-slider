@@ -3,17 +3,18 @@ import { Carousel } from 'react-responsive-carousel';
 import '../styles/carousel-style.scss';
 import { graphql } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
+import { useState } from 'react';
 
 const GetMyImage = (edge) => (
     <div className="slide-wrap">
-        <SlideWrap>
+        <div className="slide-wrap-inner">
             <GatsbyImage image={getImage(edge.node.gatsbyImageData)} alt="" />
             <p className="legend">
                 Every day our team of 10,000 Experts helps nearly 300 million people around the world solve the most
                 common and uncommon tech issues. We’re just a call, tap, click or visit away. Contact us for help.
             </p>
-        </SlideWrap>
+        </div>
     </div>
 );
 
@@ -27,90 +28,67 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const SlideWrap = styled.div`
-    min-height: 450px;
-    position: relative;
-`;
-
-const SlideshowWrapper = styled.div`
-    width: 960px;
-`;
-
-const Code = styled.pre`
-    color: darkgreen;
-`;
-
-const IndexPage = ({ data }) => (
-    <>
-        <GlobalStyles />
-        <h1>Slide Show POC</h1>
-        <p>
-            <ul>
-                <li>
-                    View online:
-                    <a href="https://gatsbyimageslider.gatsbyjs.io">https://gatsbyimageslider.gatsbyjs.io/</a>
-                </li>
-                <li>
-                    Git repo:
-                    <a href="https://github.com/Jim-Horn/gatsby-image-slider">
-                        https://github.com/Jim-Horn/gatsby-image-slider
-                    </a>
-                </li>
-            </ul>
-        </p>
-
-        <SlideshowWrapper>
-            <Carousel
-                autoPlay={false}
-                centerMode={true}
-                dynamicHeight={false}
-                emulateTouch={true}
-                infiniteLoop={true}
-                interval={5000}
-                onChange={() => {}}
-                onClickItem={() => {}}
-                onClickThumb={() => {}}
-                showArrows={true}
-                showStatus={false}
-                showThumbs={false}
-                stopOnHover={true}
-                swipeable={true}
-                useKeyboardArrows={true}>
-                {data.allImageSharp.edges.filter((edge) => edge.node.original.src.endsWith('.jpeg')).map(GetMyImage)}
-            </Carousel>
-        </SlideshowWrapper>
-
-        <h2>Source:</h2>
-
-        <Code>{`
-<Carousel
-    interval={5000}
-    showArrows={true}
-    onChange={() => {}}
-    onClickItem={() => {}}
-    onClickThumb={() => {}}
-    infiniteLoop={true}
-    showStatus={false}
-    stopOnHover={true}
-    swipeable={true}
-    showThumbs={false}
-    useKeyboardArrows={true}
-    autoPlay={true}
-    dynamicHeight={true}
-    emulateTouch={true}
-    autoFocus={true}>
-    {data.allImageSharp.edges.filter(edge => edge.node.original.src.endsWith('.jpeg')).map(GetMyImage)}
-</Carousel>`}</Code>
-
-        <Code>{`
-const GetMyImage = edge => (
-    <div>
-        <GatsbyImage image={getImage(edge.node.gatsbyImageData)} alt="" />
-        <p className="legend">{edge.node.original.src}</p>
-    </div>
-);`}</Code>
-    </>
-);
+const IndexPage = ({ data }) => {
+    const allEdges = data.allImageSharp.edges.filter((edge) => edge.node.original.src.endsWith('.jpeg'));
+    const showLength = allEdges.length;
+    const [current, setCurrent] = useState(0);
+    return (
+        <>
+            <GlobalStyles />
+            <h1>Slide Show POC</h1>
+            <code>
+                {showLength} ({current + 1})
+            </code>
+            <p>
+                <ul>
+                    <li>
+                        View online:
+                        <a href="https://gatsbyimageslider.gatsbyjs.io">https://gatsbyimageslider.gatsbyjs.io/</a>
+                    </li>
+                    <li>
+                        Git repo:
+                        <a href="https://github.com/Jim-Horn/gatsby-image-slider">
+                            https://github.com/Jim-Horn/gatsby-image-slider
+                        </a>
+                    </li>
+                </ul>
+            </p>
+            <div className="outer-slideshow">
+                <span className="control left" onClick={() => setCurrent((current - 1 + showLength) % showLength)}>
+                    L
+                </span>
+                <div className="slideshow-wrapper">
+                    <Carousel
+                        autoPlay={false}
+                        centerMode={true}
+                        dynamicHeight={false}
+                        emulateTouch={false}
+                        infiniteLoop={true}
+                        interval={5000}
+                        onChange={(curr) => {
+                            setCurrent(curr);
+                        }}
+                        onClickItem={(curr) => {
+                            setCurrent(curr);
+                        }}
+                        onClickThumb={() => {}}
+                        showArrows={false}
+                        showStatus={true}
+                        showThumbs={false}
+                        stopOnHover={true}
+                        swipeable={true}
+                        useKeyboardArrows={true}
+                        selectedItem={current}>
+                        {allEdges.map(GetMyImage)}
+                    </Carousel>
+                </div>
+                <span className="control right" onClick={() => setCurrent((current + 1) % showLength)}>
+                    R
+                </span>
+            </div>
+        </>
+    );
+};
 
 export default IndexPage;
 
@@ -119,7 +97,7 @@ export const pageQuery = graphql`
         allImageSharp {
             edges {
                 node {
-                    gatsbyImageData(width: 960, placeholder: BLURRED, formats: [AUTO, WEBP, AVIF])
+                    gatsbyImageData(width: 468, placeholder: BLURRED, formats: [AUTO, WEBP, AVIF])
                     original {
                         src
                     }
