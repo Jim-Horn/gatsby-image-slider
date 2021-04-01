@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import '../styles/carousel-style.css';
+import '../styles/carousel-style.scss';
 import { graphql } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import styled, { createGlobalStyle } from 'styled-components';
