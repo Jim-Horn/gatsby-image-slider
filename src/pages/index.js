@@ -5,6 +5,8 @@ import { graphql } from 'gatsby';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { createGlobalStyle } from 'styled-components';
 import { useState } from 'react';
+import left from '../images/slider/left.svg';
+import right from '../images/slider/right.svg';
 
 const GetMyImage = (edge) => (
     <div className="slide-wrap">
@@ -32,6 +34,8 @@ const IndexPage = ({ data }) => {
     const allEdges = data.allImageSharp.edges.filter((edge) => edge.node.original.src.endsWith('.jpeg'));
     const showLength = allEdges.length;
     const [current, setCurrent] = useState(0);
+    const getPrev = () => setCurrent((current - 1 + showLength) % showLength);
+    const getNext = () => setCurrent((current + 1) % showLength);
     return (
         <>
             <GlobalStyles />
@@ -54,8 +58,8 @@ const IndexPage = ({ data }) => {
                 </ul>
             </p>
             <div className="outer-slideshow">
-                <span className="control left" onClick={() => setCurrent((current - 1 + showLength) % showLength)}>
-                    L
+                <span className="control left" onClick={getPrev}>
+                    <img src={left} alt="" />
                 </span>
                 <div className="slideshow-wrapper">
                     <Carousel
@@ -82,8 +86,8 @@ const IndexPage = ({ data }) => {
                         {allEdges.map(GetMyImage)}
                     </Carousel>
                 </div>
-                <span className="control right" onClick={() => setCurrent((current + 1) % showLength)}>
-                    R
+                <span className="control right" onClick={getNext}>
+                    <img src={right} alt="" />
                 </span>
             </div>
         </>
