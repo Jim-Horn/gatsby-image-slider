@@ -1,24 +1,7 @@
 import * as React from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import '../styles/carousel-style.scss';
 import { graphql } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { createGlobalStyle } from 'styled-components';
-import { useState } from 'react';
-import left from '../images/slider/left.svg';
-import right from '../images/slider/right.svg';
-
-const GetMyImage = (edge) => (
-    <div className="slide-wrap">
-        <div className="slide-wrap-inner">
-            <GatsbyImage image={getImage(edge.node.gatsbyImageData)} alt="" />
-            <p className="legend">
-                Every day our team of 10,000 Experts helps nearly 300 million people around the world solve the most
-                common and uncommon tech issues. We’re just a call, tap, click or visit away. Contact us for help.
-            </p>
-        </div>
-    </div>
-);
+import { ImageCarousel } from '../components/ImageCarousel';
 
 const GlobalStyles = createGlobalStyle`
   body {
@@ -31,18 +14,10 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const IndexPage = ({ data }) => {
-    const allEdges = data.allImageSharp.edges.filter((edge) => edge.node.original.src.endsWith('.jpeg'));
-    const showLength = allEdges.length;
-    const [current, setCurrent] = useState(0);
-    const getPrev = () => setCurrent((current - 1 + showLength) % showLength);
-    const getNext = () => setCurrent((current + 1) % showLength);
     return (
         <>
             <GlobalStyles />
             <h1>Slide Show POC</h1>
-            <code>
-                {showLength} ({current + 1})
-            </code>
             <p>
                 <ul>
                     <li>
@@ -57,39 +32,7 @@ const IndexPage = ({ data }) => {
                     </li>
                 </ul>
             </p>
-            <div className="outer-slideshow">
-                <span className="control left" onClick={getPrev}>
-                    <img src={left} alt="" />
-                </span>
-                <div className="slideshow-wrapper">
-                    <Carousel
-                        autoPlay={false}
-                        centerMode={true}
-                        dynamicHeight={false}
-                        emulateTouch={false}
-                        infiniteLoop={true}
-                        interval={5000}
-                        onChange={(curr) => {
-                            setCurrent(curr);
-                        }}
-                        onClickItem={(curr) => {
-                            setCurrent(curr);
-                        }}
-                        onClickThumb={() => {}}
-                        showArrows={false}
-                        showStatus={false}
-                        showThumbs={false}
-                        stopOnHover={true}
-                        swipeable={true}
-                        useKeyboardArrows={true}
-                        selectedItem={current}>
-                        {allEdges.map(GetMyImage)}
-                    </Carousel>
-                </div>
-                <span className="control right" onClick={getNext}>
-                    <img src={right} alt="" />
-                </span>
-            </div>
+            <ImageCarousel data={data} />
         </>
     );
 };
