@@ -308,9 +308,9 @@ $overall-slideshow-height: 245px;
     .control-dots {
         @include outline(orange);
         position: absolute;
-        bottom: 35px;
+        bottom: 30px;
         @media (min-width: 960px) {
-            bottom: 35px;
+            bottom: 30px;
         }
         margin: 10px 0;
         padding: 0;
@@ -323,26 +323,21 @@ $overall-slideshow-height: 245px;
             -ms-transition: opacity 0.25s ease-in;
             -o-transition: opacity 0.25s ease-in;
             transition: opacity 0.25s ease-in;
-            opacity: 0.3;
             filter: alpha(opacity=30);
-            //box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
             background: #f5f5f5;
             border-radius: 50%;
-            border-width: 0.25rem;
-            border-color: #000;
+            border-width: 3px;
+            border-color: #f5f5f5;
+            border-style: solid;
             width: 1rem;
             height: 1rem;
             cursor: pointer;
             display: inline-block;
             margin: 0 8px;
-            &:hover {
-                opacity: 1;
-                filter: alpha(opacity=100);
+            &.selected, &:hover {
+                background-color: #000;
+                border-color: #f5f5f5;
             }
-        }
-        .dot.selected {
-            background-color: #000;
-            border-color: #f5f5f5;
         }
     }
     .carousel-status {

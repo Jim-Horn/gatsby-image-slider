@@ -77,7 +77,7 @@ const IndexPage = ({ data }) => {
                         }}
                         onClickThumb={() => {}}
                         showArrows={false}
-                        showStatus={true}
+                        showStatus={false}
                         showThumbs={false}
                         stopOnHover={true}
                         swipeable={true}
